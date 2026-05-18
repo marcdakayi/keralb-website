@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion'
 import ProductPage from '../components/ProductPage'
-import { TISANE_ZONES } from '../components/ProductViewer'
 
 export default function TisaneTurmeriMove() {
   return (
@@ -17,8 +16,12 @@ export default function TisaneTurmeriMove() {
           "Absorption maximale grâce au poivre noir"
         ]}
         colorCode="#FF6B35"
-        imagePath="/images/turmerimove.jpg"
-        zones={TISANE_ZONES}
+        images={[
+          '/images/produits/turmerimove-avant.png',
+          '/images/produits/turmerimove-cote1.png',
+          '/images/produits/turmerimove-arriere.png',
+          '/images/produits/turmerimove-dessus.png',
+        ]}
         modelType="carton"
       />
     </motion.div>

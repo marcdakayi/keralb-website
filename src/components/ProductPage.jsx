@@ -2,7 +2,7 @@ import { useRef, useEffect } from 'react'
 import { motion, useScroll, useTransform, useInView, animate } from 'framer-motion'
 import { CheckCircle2, Leaf, Shield, Droplets } from 'lucide-react'
 import OrderForm from './OrderForm'
-import ProductViewer from './ProductViewer'
+import ProductRotation from './ProductRotation'
 
 function Counter({ value, suffix = "" }) {
   const nodeRef = useRef()
@@ -34,7 +34,7 @@ export default function ProductPage({
   bienfaitsList,
   colorCode,
   imagePath,
-  zones,
+  images,
   modelType = 'bottle'
 }) {
   const containerRef = useRef(null)
@@ -117,14 +117,9 @@ export default function ProductPage({
             transition={{ duration: 1.2, ease: "easeOut" }}
             className="w-full md:w-1/2 h-[60vh] md:h-[80vh] flex items-center justify-center"
           >
-            <motion.div style={{ y: yImage }} className="w-full px-4 md:px-8">
-              {imagePath && zones && zones.length > 0 ? (
-                <ProductViewer
-                  image={imagePath}
-                  zones={zones}
-                  productColor={colorCode}
-                  productName={title}
-                />
+            <motion.div style={{ y: yImage }} className="w-full px-4 md:px-8 h-full">
+              {images && images.length > 0 ? (
+                <ProductRotation images={images} productColor={colorCode} />
               ) : (
                 <div
                   className="w-48 h-80 mx-auto rounded-3xl opacity-30 flex items-center justify-center text-white/40 text-sm font-sans"

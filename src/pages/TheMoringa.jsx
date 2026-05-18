@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion'
 import ProductPage from '../components/ProductPage'
-import { TISANE_ZONES } from '../components/ProductViewer'
 
 export default function TheMoringa() {
   return (
@@ -17,8 +16,12 @@ export default function TheMoringa() {
           "Énergie durable"
         ]}
         colorCode="#2D7A2D"
-        imagePath="/images/moringa.jpg"
-        zones={TISANE_ZONES}
+        images={[
+          '/images/produits/moringa-avant.png',
+          '/images/produits/moringa-cote1.png',
+          '/images/produits/moringa-cote2.png',
+          '/images/produits/moringa-dessus.png',
+        ]}
         modelType="carton"
       />
     </motion.div>
