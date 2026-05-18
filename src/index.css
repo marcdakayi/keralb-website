@@ -4,22 +4,31 @@
   --color-keral-yellow: #FFD700;
   --color-keral-orange: #FF6B00;
   --color-keral-green: #2D7A2D;
-  --font-display: 'Syne', sans-serif;
+  --font-display: 'Playfair Display', serif;
   --font-sans: 'DM Sans', sans-serif;
+  --font-cormorant: 'Cormorant Garamond', serif;
 }
-
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Syne:wght@400..800&display=swap');
-
 
 @layer base {
   body {
-    @apply bg-zinc-950 text-slate-50 antialiased selection:bg-keral-orange selection:text-white;
+    @apply bg-[#0A0A0A] text-[#CCCCCC] antialiased selection:bg-keral-orange selection:text-white;
     font-family: 'DM Sans', sans-serif;
   }
-  
+
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Playfair Display', serif;
+    color: #FFFFFF;
   }
+}
+
+/* Float animation for product images */
+@keyframes productFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-24px); }
+}
+
+.product-float {
+  animation: productFloat 4s ease-in-out infinite;
 }
 
 /* Custom premium scrollbar */
@@ -28,14 +37,14 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #09090b; /* zinc-950 */
+  background: #0A0A0A;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #3f3f46; /* zinc-700 */
+  background: #3f3f46;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #ff6b00; /* keral-orange */
+  background: #ff6b00;
 }

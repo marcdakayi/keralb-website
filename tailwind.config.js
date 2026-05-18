@@ -14,8 +14,9 @@ export default {
         }
       },
       fontFamily: {
-        sans: ['DM Sans', 'sans-serif'], // Body
-        display: ['Syne', 'sans-serif'], // Headings
+        sans: ['DM Sans', 'sans-serif'],
+        display: ['Playfair Display', 'serif'],
+        cormorant: ['Cormorant Garamond', 'serif'],
       }
     },
   },

@@ -5,7 +5,11 @@
       "Bash(git add *)",
       "Bash(git commit -m ' *)",
       "Bash(git branch *)",
-      "Bash(gh auth *)"
+      "Bash(gh auth *)",
+      "Bash(mkdir -p \"/Users/joetech/Siteweb KERAL-B/public/images/produits\")"
+    ],
+    "additionalDirectories": [
+      "/Users/joetech/Siteweb KERAL-B/public/images"
     ]
   }
 }

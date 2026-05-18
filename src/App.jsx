@@ -1,11 +1,10 @@
-import React from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 
 import Navbar from './components/Layout/Navbar'
 import Footer from './components/Layout/Footer'
+import ScrollToTop from './components/ScrollToTop'
 
-// Import des pages
 import Home from './pages/Home'
 import JusPurAnanas from './pages/JusPurAnanas'
 import JusAnamasPassion from './pages/JusAnamasPassion'
@@ -18,11 +17,11 @@ function App() {
   const location = useLocation()
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] text-slate-50 font-sans selection:bg-keral-orange selection:text-white flex flex-col">
+    <div className="min-h-screen bg-[#0A0A0A] text-[#CCCCCC] font-sans selection:bg-keral-orange selection:text-white flex flex-col">
+      <ScrollToTop />
       <Navbar />
-      
+
       <main className="flex-grow relative overflow-hidden">
-        {/* AnimatePresence gère les transitions de pages cinématographiques (fade + scale) */}
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<Home />} />
@@ -31,11 +30,11 @@ function App() {
             <Route path="/jus-ananas-gingembre" element={<JusAnanaGingembre />} />
             <Route path="/jus-ananas-mangue" element={<JusAnanasMangue />} />
             <Route path="/the-moringa" element={<TheMoringa />} />
-            <Route path="/tisane-turmeri-move" element={<TisaneTurmeriMove />} />
+            <Route path="/tisane-turmerimove" element={<TisaneTurmeriMove />} />
           </Routes>
         </AnimatePresence>
       </main>
-      
+
       <Footer />
     </div>
   )
