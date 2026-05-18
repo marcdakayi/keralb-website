@@ -2,6 +2,7 @@ import { useRef, useEffect } from 'react'
 import { motion, useScroll, useTransform, useInView, animate } from 'framer-motion'
 import { CheckCircle2, Leaf, Shield, Droplets } from 'lucide-react'
 import OrderForm from './OrderForm'
+import ProductViewer from './ProductViewer'
 
 function Counter({ value, suffix = "" }) {
   const nodeRef = useRef()
@@ -33,6 +34,7 @@ export default function ProductPage({
   bienfaitsList,
   colorCode,
   imagePath,
+  zones,
   modelType = 'bottle'
 }) {
   const containerRef = useRef(null)
@@ -108,44 +110,29 @@ export default function ProductPage({
             </motion.div>
           </div>
 
-          {/* Right — product image */}
+          {/* Right — product viewer (image + zoom rotatif sur zones) */}
           <motion.div
             initial={{ opacity: 0, x: 60 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1.2, ease: "easeOut" }}
             className="w-full md:w-1/2 h-[60vh] md:h-[80vh] flex items-center justify-center"
           >
-            {/* Parallax wrapper */}
-            <motion.div style={{ y: yImage }}>
-              {/* Float animation */}
-              <div className="product-float">
-                {/* Hover rotation */}
-                <motion.div
-                  whileHover={{ rotateY: -5, scale: 1.04 }}
-                  transition={{ type: "spring", stiffness: 200, damping: 20 }}
-                  style={{ perspective: 1000 }}
+            <motion.div style={{ y: yImage }} className="w-full px-4 md:px-8">
+              {imagePath && zones && zones.length > 0 ? (
+                <ProductViewer
+                  image={imagePath}
+                  zones={zones}
+                  productColor={colorCode}
+                  productName={title}
+                />
+              ) : (
+                <div
+                  className="w-48 h-80 mx-auto rounded-3xl opacity-30 flex items-center justify-center text-white/40 text-sm font-sans"
+                  style={{ background: `linear-gradient(135deg, ${colorCode}40, ${colorCode}10)`, border: `1px solid ${colorCode}30` }}
                 >
-                  {imagePath ? (
-                    <img
-                      src={imagePath}
-                      alt={title}
-                      className="object-contain w-auto"
-                      style={{
-                        height: '80vh',
-                        maxHeight: '700px',
-                        filter: `drop-shadow(0 40px 80px ${colorCode}55)`,
-                      }}
-                    />
-                  ) : (
-                    <div
-                      className="w-48 h-80 rounded-3xl opacity-30 flex items-center justify-center text-white/40 text-sm font-sans"
-                      style={{ background: `linear-gradient(135deg, ${colorCode}40, ${colorCode}10)`, border: `1px solid ${colorCode}30` }}
-                    >
-                      Image à ajouter
-                    </div>
-                  )}
-                </motion.div>
-              </div>
+                  Image à ajouter
+                </div>
+              )}
             </motion.div>
           </motion.div>
         </div>

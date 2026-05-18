@@ -17,10 +17,10 @@ export default function Navbar() {
   const navLinks = [
     { name: 'Accueil', path: '/' },
     { name: 'Pur Ananas', path: '/jus-pur-ananas' },
-    { name: 'Gingembre', path: '/jus-ananas-gingembre' },
-    { name: 'Passion', path: '/jus-ananas-passion' },
-    { name: 'Mangue', path: '/jus-ananas-mangue' },
-    { name: 'Moringa', path: '/the-moringa' },
+    { name: 'Ananas-Passion', path: '/jus-ananas-passion' },
+    { name: 'Ananas-Gingembre', path: '/jus-ananas-gingembre' },
+    { name: 'Ananas-Mangue', path: '/jus-ananas-mangue' },
+    { name: 'Thé Moringa', path: '/the-moringa' },
     { name: 'TurmeriMove', path: '/tisane-turmerimove' },
   ]
 
@@ -48,12 +48,12 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden lg:flex items-center gap-5 xl:gap-6">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 to={link.path}
-                className={`text-sm font-sans font-medium pb-0.5 border-b-2 transition-all duration-200 ${
+                className={`text-xs xl:text-sm font-sans font-medium pb-0.5 border-b-2 transition-all duration-200 whitespace-nowrap ${
                   isActive(link.path)
                     ? 'text-white border-keral-orange'
                     : 'text-white/60 border-transparent hover:text-white hover:border-keral-orange/50'
@@ -73,7 +73,7 @@ export default function Navbar() {
             </button>
 
             <button
-              className="md:hidden text-white"
+              className="lg:hidden text-white"
               onClick={() => setIsMobileMenuOpen(true)}
             >
               <Menu size={24} />

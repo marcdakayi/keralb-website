@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import ProductPage from '../components/ProductPage'
+import { JUS_ZONES } from '../components/ProductViewer'
 
 export default function JusPurAnanas() {
   return (
@@ -16,7 +17,8 @@ export default function JusPurAnanas() {
           "Zéro additif"
         ]}
         colorCode="#FFD700"
-        imagePath="/images/produits/pur-ananas.jpg"
+        imagePath="/images/ananas.jpg"
+        zones={JUS_ZONES}
         modelType="bottle"
       />
     </motion.div>

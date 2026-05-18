@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import ProductPage from '../components/ProductPage'
+import { JUS_ZONES } from '../components/ProductViewer'
 
 export default function JusAnanaGingembre() {
   return (
@@ -16,7 +17,8 @@ export default function JusAnanaGingembre() {
           "Digestion optimisée"
         ]}
         colorCode="#FF8C00"
-        imagePath="/images/produits/ananas-gingembre.jpg"
+        imagePath="/images/gingembre.jpg"
+        zones={JUS_ZONES}
         modelType="bottle"
       />
     </motion.div>

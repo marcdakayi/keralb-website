@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import ProductPage from '../components/ProductPage'
+import { JUS_ZONES } from '../components/ProductViewer'
 
 export default function JusAnamasPassion() {
   return (
@@ -16,7 +17,8 @@ export default function JusAnamasPassion() {
           "100% naturel"
         ]}
         colorCode="#FF6B00"
-        imagePath="/images/produits/ananas-passion.jpg"
+        imagePath="/images/passion.jpg"
+        zones={JUS_ZONES}
         modelType="bottle"
       />
     </motion.div>
