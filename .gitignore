@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Claude Code tooling (local only)
+.agents/
+install_skills.sh
+skills-lock.json

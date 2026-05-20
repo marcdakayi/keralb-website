@@ -10,24 +10,24 @@ const pageVariants = {
 }
 
 const product = {
-  name: 'ANANAS\nMANGUE',
-  tagline: "La douceur d'Afrique",
-  description: "Deux fruits emblématiques de l'Afrique réunis dans un jus d'exception. La mangue apporte sa richesse veloutée à la vivacité de l'ananas.",
+  name: 'ANANAS\nPASSION',
+  tagline: "L'explosion tropicale",
+  description: "L'alliance parfaite de l'ananas camerounais et du fruit de la passion. Une explosion de saveurs tropicales, 100% naturelle, sans sucre ajouté.",
   volume: '300ml',
-  ingredients: ['Ananas', 'Mangue'],
+  ingredients: ['Ananas', 'Fruit de la passion'],
   bienfaits: [
-    { icon: '👁️', title: 'Vision', desc: 'Bêta-carotène de la mangue' },
-    { icon: '💪', title: 'Vitalité', desc: 'Vitamines A, B, C combinées' },
-    { icon: '🌿', title: 'Alcalinité', desc: 'Équilibre acido-basique' },
-    { icon: '✨', title: 'Beauté', desc: 'Peau lumineuse et hydratée' },
+    { icon: '💧', title: 'Hydratation', desc: 'Riche en eau naturelle' },
+    { icon: '🌺', title: 'Antioxydants', desc: 'Fruit de la passion riche en flavonoïdes' },
+    { icon: '😌', title: 'Détente', desc: 'Propriétés calmantes naturelles' },
+    { icon: '✨', title: 'Peau', desc: "Vitamines A et C pour l'éclat" },
   ],
   price: '2800 FCFA',
   color: '#E86B2A',
-  imageFront: '/images/produits/mangue-avant.png',
-  imageBack: '/images/produits/mangue-arriere.png',
+  imageFront: '/images/produits/passion-avant.png',
+  imageBack: '/images/produits/passion-arriere1.png',
 }
 
-export default function JusAnanasMangue() {
+export default function JusAnanaPassion() {
   const heroRef = useRef(null)
   const bottleRef = useRef(null)
   const infoRef = useRef(null)
@@ -93,7 +93,7 @@ export default function JusAnanasMangue() {
 
         <div className="flex flex-col justify-center px-8 md:px-16 lg:px-24 pt-32 pb-16 relative z-10">
           <p className="text-white/30 text-xs tracking-[0.4em] uppercase font-body mb-6">
-            Keral-B · 04
+            Keral-B · 02
           </p>
           <h1
             className="font-display text-white leading-none mb-6"
@@ -127,7 +127,7 @@ export default function JusAnanasMangue() {
 
           <div className="flex flex-col sm:flex-row gap-4">
             <a
-              href="https://wa.me/237656783732?text=Je%20commande%20l'Ananas-Mangue%20Keral-B"
+              href="https://wa.me/237656783732?text=Je%20commande%20l'Ananas-Passion%20Keral-B"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-3 px-8 py-4 font-body font-medium text-xs tracking-[0.2em] uppercase text-[#050505] hover:opacity-90 transition-all duration-500 hover:-translate-y-1"
@@ -192,7 +192,7 @@ export default function JusAnanasMangue() {
           {product.price}
         </h2>
         <a
-          href="https://wa.me/237656783732?text=Je%20commande%20l'Ananas-Mangue%20Keral-B"
+          href="https://wa.me/237656783732?text=Je%20commande%20l'Ananas-Passion%20Keral-B"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-3 px-12 py-5 font-body font-medium text-xs tracking-[0.25em] uppercase text-[#050505] hover:opacity-90 transition-all duration-300 hover:-translate-y-1"

@@ -10,24 +10,24 @@ const pageVariants = {
 }
 
 const product = {
-  name: 'ANANAS\nMANGUE',
-  tagline: "La douceur d'Afrique",
-  description: "Deux fruits emblématiques de l'Afrique réunis dans un jus d'exception. La mangue apporte sa richesse veloutée à la vivacité de l'ananas.",
-  volume: '300ml',
-  ingredients: ['Ananas', 'Mangue'],
+  name: 'TURMERI\nMOVE',
+  tagline: 'Le pouvoir des épices',
+  description: 'Une infusion 100% naturelle alliant curcuma, gingembre et poivre noir de Penja. Formulée pour le confort articulaire, la digestion et la vitalité. 30 sticks, produit au Cameroun.',
+  volume: '30 sticks',
+  ingredients: ['Curcuma', 'Gingembre', 'Poivre noir de Penja'],
   bienfaits: [
-    { icon: '👁️', title: 'Vision', desc: 'Bêta-carotène de la mangue' },
-    { icon: '💪', title: 'Vitalité', desc: 'Vitamines A, B, C combinées' },
-    { icon: '🌿', title: 'Alcalinité', desc: 'Équilibre acido-basique' },
-    { icon: '✨', title: 'Beauté', desc: 'Peau lumineuse et hydratée' },
+    { icon: '🦴', title: 'Articulations', desc: 'Confort articulaire optimal' },
+    { icon: '🔥', title: 'Anti-inflammatoire', desc: 'Curcumine + pipérine' },
+    { icon: '💊', title: 'Digestion', desc: 'Favorise le transit naturel' },
+    { icon: '💪', title: 'Vitalité', desc: 'Renforce les défenses naturelles' },
   ],
-  price: '2800 FCFA',
-  color: '#E86B2A',
-  imageFront: '/images/produits/mangue-avant.png',
-  imageBack: '/images/produits/mangue-arriere.png',
+  price: '3200 FCFA',
+  color: '#E8C547',
+  imageFront: '/images/produits/turmerimove-avant.png',
+  imageBack: '/images/produits/turmerimove-arriere.png',
 }
 
-export default function JusAnanasMangue() {
+export default function TisaneTurmerimove() {
   const heroRef = useRef(null)
   const bottleRef = useRef(null)
   const infoRef = useRef(null)
@@ -88,12 +88,12 @@ export default function JusAnanasMangue() {
       >
         <div
           className="absolute inset-0 pointer-events-none"
-          style={{ background: `radial-gradient(ellipse 60% 60% at 70% 50%, rgba(232,107,42,0.12) 0%, transparent 70%)` }}
+          style={{ background: `radial-gradient(ellipse 60% 60% at 70% 50%, rgba(232,197,71,0.12) 0%, transparent 70%)` }}
         />
 
         <div className="flex flex-col justify-center px-8 md:px-16 lg:px-24 pt-32 pb-16 relative z-10">
           <p className="text-white/30 text-xs tracking-[0.4em] uppercase font-body mb-6">
-            Keral-B · 04
+            Keral-B · 06
           </p>
           <h1
             className="font-display text-white leading-none mb-6"
@@ -111,7 +111,7 @@ export default function JusAnanasMangue() {
           <div className="flex items-center gap-6 mb-12">
             <div className="text-center">
               <p className="font-display text-3xl" style={{ color: product.color }}>{product.volume}</p>
-              <p className="text-white/30 text-xs tracking-widest uppercase font-body">Volume</p>
+              <p className="text-white/30 text-xs tracking-widest uppercase font-body">Format</p>
             </div>
             <div className="w-px h-10 bg-white/10" />
             <div className="text-center">
@@ -127,7 +127,7 @@ export default function JusAnanasMangue() {
 
           <div className="flex flex-col sm:flex-row gap-4">
             <a
-              href="https://wa.me/237656783732?text=Je%20commande%20l'Ananas-Mangue%20Keral-B"
+              href="https://wa.me/237656783732?text=Je%20commande%20TurmeriMove%20Keral-B"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-3 px-8 py-4 font-body font-medium text-xs tracking-[0.2em] uppercase text-[#050505] hover:opacity-90 transition-all duration-500 hover:-translate-y-1"
@@ -150,11 +150,11 @@ export default function JusAnanasMangue() {
               src={product.imageFront}
               alt={product.name}
               className="w-full h-auto object-contain"
-              style={{ filter: 'drop-shadow(0 40px 80px rgba(232,107,42,0.3))' }}
+              style={{ filter: 'drop-shadow(0 40px 80px rgba(232,197,71,0.3))' }}
             />
           </div>
           <div className="absolute w-64 h-64 md:w-96 md:h-96 rounded-full border border-white/5 animate-spin" style={{ animationDuration: '20s' }} />
-          <div className="absolute w-48 h-48 md:w-72 md:h-72 rounded-full" style={{ border: `1px solid rgba(232,107,42,0.08)` }} />
+          <div className="absolute w-48 h-48 md:w-72 md:h-72 rounded-full" style={{ border: `1px solid rgba(232,197,71,0.08)` }} />
         </div>
       </section>
 
@@ -192,7 +192,7 @@ export default function JusAnanasMangue() {
           {product.price}
         </h2>
         <a
-          href="https://wa.me/237656783732?text=Je%20commande%20l'Ananas-Mangue%20Keral-B"
+          href="https://wa.me/237656783732?text=Je%20commande%20TurmeriMove%20Keral-B"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-3 px-12 py-5 font-body font-medium text-xs tracking-[0.25em] uppercase text-[#050505] hover:opacity-90 transition-all duration-300 hover:-translate-y-1"

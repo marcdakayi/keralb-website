@@ -1,81 +1,210 @@
 @import "tailwindcss";
 
+/* ── Tailwind v4 theme tokens (génère les utilitaires Tailwind) ── */
 @theme {
-  --color-keral-yellow: #FFD700;
-  --color-keral-orange: #FF6B00;
-  --color-keral-green: #2D7A2D;
-  --font-display: 'Playfair Display', serif;
-  --font-sans: 'DM Sans', sans-serif;
-  --font-cormorant: 'Cormorant Garamond', serif;
+  --color-gold:         #E8C547;
+  --color-keral-orange: #E86B2A;
+  --color-keral-green:  #3A7A3A;
+  --color-keral-dark:   #050505;
+  --color-keral-dark2:  #0C0C0C;
+  --color-keral-cream:  #F0EBE0;
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-serif:   'Playfair Display', serif;
+  --font-body:    'Inter', sans-serif;
+  --font-accent:  'Cormorant Garamond', serif;
 }
+
+/* ── Variables globales ── */
+:root {
+  --gold:   #FFD700;
+  --orange: #FF6B00;
+  --green:  #2D7A2D;
+  --dark:   #070707;
+  --dark-2: #0E0E0E;
+  --dark-3: #151505;
+  --cream:  #F5F0E8;
+  --muted:  rgba(245, 240, 232, 0.45);
+}
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  cursor: none !important;
+}
+
+html { scroll-behavior: smooth; font-size: 16px; }
 
 @layer base {
   body {
-    @apply bg-[#0A0A0A] text-[#CCCCCC] antialiased selection:bg-keral-orange selection:text-white;
-    font-family: 'DM Sans', sans-serif;
+    background: #050505;
+    color: #F0EBE0;
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Playfair Display', serif;
-    color: #FFFFFF;
+    color: #F0EBE0;
   }
 
   p {
-    font-family: 'DM Sans', sans-serif;
-    color: #CCCCCC;
-  }
-
-  .font-cormorant,
-  em.tagline,
-  .tagline {
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
+    font-family: 'Inter', sans-serif;
+    color: var(--muted);
   }
 }
 
-/* CTA gradient KERAL-B */
-.btn-keral {
-  display: inline-block;
-  padding: 1rem 2rem;
-  border-radius: 50px;
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 2px; }
+::-webkit-scrollbar-track { background: var(--dark); }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--gold), var(--orange));
+  border-radius: 2px;
+}
+
+/* ── CURSEUR ── */
+.cursor-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--gold);
+  border-radius: 50%;
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s ease, background 0.2s ease;
+  mix-blend-mode: difference;
+}
+
+.cursor-ring {
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(255, 215, 0, 0.5);
+  border-radius: 50%;
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 99998;
+  transform: translate(-50%, -50%);
+  transition: all 0.12s ease;
+}
+
+.cursor-dot.expanded  { transform: translate(-50%, -50%) scale(3); }
+.cursor-ring.expanded { width: 60px; height: 60px; border-color: rgba(255, 107, 0, 0.4); }
+
+/* ── TYPOGRAPHIE ── */
+.font-accent { font-family: 'Cormorant Garamond', serif; }
+
+/* ── GRADIENTS TEXT ── */
+.text-gradient {
+  background: linear-gradient(135deg, var(--gold) 0%, var(--orange) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-green {
+  background: linear-gradient(135deg, var(--gold) 0%, var(--green) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── GLASSMORPHISM ── */
+.glass {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.glass-gold {
+  background: rgba(255, 215, 0, 0.05);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 215, 0, 0.12);
+}
+
+/* ── BOUTONS ── */
+.btn-gold {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, var(--gold), var(--orange));
+  color: #070707;
   font-family: 'DM Sans', sans-serif;
   font-weight: 600;
-  font-size: 0.875rem;
-  letter-spacing: 0.05em;
-  color: #000;
-  background: linear-gradient(135deg, #FFD700, #FF6B00);
-  transition: transform 0.2s ease, box-shadow 0.3s ease;
-  box-shadow: 0 10px 30px -10px rgba(255,107,0,0.5);
-}
-.btn-keral:hover {
-  transform: translateY(-1px) scale(1.02);
-  box-shadow: 0 15px 40px -10px rgba(255,107,0,0.7);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 18px 44px;
+  border-radius: 100px;
+  border: none;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
 }
 
-/* Float animation for product images */
+.btn-gold::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+}
+
+.btn-gold:hover::after { transform: translateX(100%); }
+.btn-gold:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 60px rgba(255, 107, 0, 0.4);
+}
+
+.btn-outline-gold {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: transparent;
+  color: var(--cream);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 17px 44px;
+  border-radius: 100px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  transition: all 0.4s ease;
+}
+
+.btn-outline-gold:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+  transform: translateY(-3px);
+}
+
+/* ── LIGNE DÉCO ── */
+.deco-line {
+  display: inline-block;
+  width: 48px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold), var(--orange));
+  vertical-align: middle;
+  margin-right: 12px;
+}
+
+/* ── FLOAT ANIMATION ── */
 @keyframes productFloat {
   0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-24px); }
+  50%       { transform: translateY(-24px); }
 }
 
-.product-float {
-  animation: productFloat 4s ease-in-out infinite;
-}
+.product-float { animation: productFloat 4s ease-in-out infinite; }
 
-/* Custom premium scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
+/* ── SECTION SPACING ── */
+.section-padding { padding: 120px 48px; }
 
-::-webkit-scrollbar-track {
-  background: #0A0A0A;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #3f3f46;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #ff6b00;
+@media (max-width: 768px) {
+  .section-padding { padding: 80px 24px; }
 }
