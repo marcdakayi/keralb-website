@@ -84,7 +84,8 @@ export default function JusAnanaGingembre() {
     >
       <section
         ref={heroRef}
-        className="min-h-screen grid grid-cols-1 md:grid-cols-2 relative overflow-hidden"
+        className="min-h-screen grid grid-cols-1 md:grid-cols-2
+              relative overflow-hidden pt-20 md:pt-0"
       >
         <div
           className="absolute inset-0 pointer-events-none"
@@ -108,7 +109,7 @@ export default function JusAnanaGingembre() {
           <p className="font-accent italic text-white/50 text-xl mb-8">{product.tagline}</p>
           <p className="font-body text-white/40 text-sm leading-relaxed max-w-sm mb-12">{product.description}</p>
 
-          <div className="flex items-center gap-6 mb-12">
+          <div className="flex items-center gap-3 md:gap-6 mb-10 md:mb-12 flex-wrap">
             <div className="text-center">
               <p className="font-display text-3xl" style={{ color: product.color }}>{product.volume}</p>
               <p className="text-white/30 text-xs tracking-widest uppercase font-body">Volume</p>
@@ -125,7 +126,7 @@ export default function JusAnanaGingembre() {
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex flex-col gap-3 sm:flex-row sm:gap-4 w-full sm:w-auto">
             <a
               href="https://wa.me/237656783732?text=Je%20commande%20l'Ananas-Gingembre%20Keral-B"
               target="_blank"
@@ -145,7 +146,7 @@ export default function JusAnanaGingembre() {
         </div>
 
         <div className="flex items-center justify-center relative pt-16 md:pt-0 pb-16 md:pb-0">
-          <div ref={bottleRef} className="relative w-48 md:w-64 lg:w-72" style={{ transformStyle: 'preserve-3d' }}>
+          <div ref={bottleRef} className="relative w-36 md:w-64 lg:w-72" style={{ transformStyle: 'preserve-3d' }}>
             <img
               src={product.imageFront}
               alt={product.name}

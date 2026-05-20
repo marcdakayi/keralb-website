@@ -92,7 +92,8 @@ export default function JusPurAnanas() {
       {/* ── HERO SPLIT ── */}
       <section
         ref={heroRef}
-        className="min-h-screen grid grid-cols-1 md:grid-cols-2 relative overflow-hidden"
+        className="min-h-screen grid grid-cols-1 md:grid-cols-2
+              relative overflow-hidden pt-20 md:pt-0"
       >
         {/* Glow background */}
         <div
@@ -131,7 +132,7 @@ export default function JusPurAnanas() {
             {product.description}
           </p>
 
-          <div className="flex items-center gap-6 mb-12">
+          <div className="flex items-center gap-3 md:gap-6 mb-10 md:mb-12 flex-wrap">
             <div className="text-center">
               <p className="font-display text-3xl" style={{ color: product.color }}>
                 {product.volume}
@@ -160,7 +161,7 @@ export default function JusPurAnanas() {
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex flex-col gap-3 sm:flex-row sm:gap-4 w-full sm:w-auto">
             <a
               href="https://wa.me/237656783732?text=Je%20commande%20le%20Pur%20Jus%20d'Ananas%20Keral-B"
               target="_blank"
@@ -194,7 +195,7 @@ export default function JusPurAnanas() {
                         pt-16 md:pt-0 pb-16 md:pb-0">
           <div
             ref={bottleRef}
-            className="relative w-48 md:w-64 lg:w-72"
+            className="relative w-36 md:w-64 lg:w-72"
             style={{ transformStyle: 'preserve-3d' }}
           >
             <img

@@ -239,7 +239,7 @@ export default function Home() {
 
               <div className="flex items-center gap-6">
                 <div
-                  className="w-16 h-20 md:w-20 md:h-28 overflow-hidden rounded
+                  className="hidden md:block w-20 h-28 overflow-hidden rounded
                              opacity-0 group-hover:opacity-100
                              transition-all duration-500 transform
                              scale-75 group-hover:scale-100"
@@ -285,7 +285,7 @@ export default function Home() {
           ].map((stat, i) => (
             <div
               key={i}
-              className="flex flex-col items-center justify-center py-12 px-6
+              className="flex flex-col items-center justify-center py-8 px-3 md:py-12 md:px-6
                          border-r border-white/5 last:border-0"
             >
               <div className="flex items-end gap-1 mb-3">
@@ -310,9 +310,9 @@ export default function Home() {
       {/* ── ABOUT / HISTOIRE ── */}
       <section
         ref={aboutRef}
-        className="py-32 px-6 md:px-16 lg:px-32
+        className="py-16 md:py-32 px-6 md:px-16 lg:px-32
                    flex flex-col md:flex-row
-                   items-center gap-16 md:gap-32"
+                   items-center gap-12 md:gap-32"
       >
         <div className="flex-1">
           <p className="text-white/30 text-xs tracking-[0.4em] uppercase mb-6">
@@ -382,7 +382,7 @@ export default function Home() {
         </p>
         <h2
           className="font-display text-white leading-none mb-12"
-          style={{ fontSize: 'clamp(3rem, 8vw, 8rem)' }}
+          style={{ fontSize: 'clamp(2.5rem, 8vw, 8rem)' }}
         >
           PRÊT À<br/>
           <span className="text-gold">GOÛTER</span><br/>

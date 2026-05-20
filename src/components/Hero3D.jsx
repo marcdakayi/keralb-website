@@ -69,7 +69,7 @@ function Bottle() {
 
       {/* Bouteille — plan avec texture */}
       <Float speed={2} rotationIntensity={0.3} floatIntensity={0.5}>
-        <mesh ref={meshRef} scale={[1.8, 3.2, 1]}>
+        <mesh ref={meshRef} scale={[1.4, 2.6, 1]}>
           <planeGeometry args={[1, 1]} />
           <meshStandardMaterial
             map={texture}
@@ -230,7 +230,7 @@ export default function Hero3D() {
         className="absolute inset-0 w-full h-full"
       >
         <Canvas
-          camera={{ position: [0, 0, 6], fov: 45 }}
+          camera={{ position: [0, 0, 7], fov: 50 }}
           gl={{
             antialias: true,
             alpha: false,
@@ -269,9 +269,9 @@ export default function Hero3D() {
           background: `
             linear-gradient(to right,
               #050505 0%,
-              rgba(5,5,5,0.7) 30%,
-              rgba(5,5,5,0.2) 60%,
-              rgba(5,5,5,0.4) 100%),
+              rgba(5,5,5,0.85) 40%,
+              rgba(5,5,5,0.6) 70%,
+              rgba(5,5,5,0.7) 100%),
             linear-gradient(to top,
               #050505 0%,
               transparent 30%)
