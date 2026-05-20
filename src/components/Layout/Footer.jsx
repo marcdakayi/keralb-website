@@ -1,74 +1,82 @@
 import { Link } from 'react-router-dom'
-import { Mail, Phone, MapPin } from 'lucide-react'
-
-const PRODUITS = [
-  { name: "Pur Jus d'Ananas",  path: '/jus-pur-ananas',      color: 'hover:text-keral-yellow' },
-  { name: 'Ananas-Passion',    path: '/jus-ananas-passion',  color: 'hover:text-keral-orange' },
-  { name: 'Ananas-Gingembre',  path: '/jus-ananas-gingembre', color: 'hover:text-keral-orange' },
-  { name: 'Ananas-Mangue',     path: '/jus-ananas-mangue',   color: 'hover:text-keral-orange' },
-  { name: 'Thé Moringa',       path: '/the-moringa',         color: 'hover:text-keral-green' },
-  { name: 'TurmeriMove',       path: '/tisane-turmerimove',  color: 'hover:text-keral-orange' },
-]
+import { PRODUCTS, CONTACT } from '../../lib/constants'
 
 export default function Footer() {
   return (
-    <footer className="bg-zinc-950 border-t border-white/5 py-12 px-6 md:px-12">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
-        <div className="md:col-span-2">
-          <h2 className="text-3xl font-display font-bold text-white mb-4">
-            KERAL<span className="text-keral-orange">-B</span>
-          </h2>
-          <p className="text-zinc-500 font-sans max-w-sm">
-            Authentic Taste — Zero Compromise.
-            Purs jus naturels et tisanes fabriqués avec passion au Cameroun.
-          </p>
-          <p className="mt-4 font-cormorant italic text-keral-yellow text-lg">
-            Le goût vrai, sans compromis.
-          </p>
-        </div>
+    <footer
+      style={{ borderTop: '1px solid var(--border-subtle)', backgroundColor: 'var(--bg-primary)' }}
+      aria-label="Pied de page KERAL-B"
+    >
+      <div
+        className="container-keral"
+        style={{ padding: '64px 0', display: 'grid', gridTemplateColumns: '1fr', gap: '40px' }}
+      >
+        <style>{`@media(min-width:768px){#footer-grid{grid-template-columns:1.6fr 1fr 1fr!important}}`}</style>
+        <div id="footer-grid" style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '40px' }}>
 
-        <div>
-          <h3 className="text-white font-bold font-display mb-4 uppercase tracking-wider text-sm">
-            Produits
-          </h3>
-          <ul className="space-y-2 text-zinc-400 font-sans text-sm">
-            {PRODUITS.map((p) => (
-              <li key={p.path}>
-                <Link to={p.path} className={`transition-colors ${p.color}`}>
-                  {p.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+          {/* Col 1 */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <Link to="/" style={{ fontFamily: 'Playfair Display, serif', fontStyle: 'italic', fontSize: '20px', fontWeight: 500, color: 'var(--accent-gold)', textDecoration: 'none', width: 'fit-content' }}>
+              KERAL·B
+            </Link>
+            <p style={{ fontFamily: 'Inter', fontSize: '13px', color: 'var(--text-tertiary)', lineHeight: 1.6 }}>
+              La Nature dans Chaque Goutte
+            </p>
+            <p style={{ fontFamily: 'Inter', fontSize: '12px', color: 'var(--text-tertiary)', marginTop: '8px' }}>
+              © {new Date().getFullYear()} Keral-B · Douala, Cameroun
+            </p>
+          </div>
 
-        <div>
-          <h3 className="text-white font-bold font-display mb-4 uppercase tracking-wider text-sm">
-            Contact
-          </h3>
-          <ul className="space-y-3 text-zinc-400 font-sans text-sm">
-            <li className="flex items-center gap-2">
-              <MapPin size={14} className="text-keral-orange flex-shrink-0" />
-              Douala, Cameroun
-            </li>
-            <li className="flex items-center gap-2">
-              <Mail size={14} className="text-keral-orange flex-shrink-0" />
-              <a href="mailto:contact@keralb.cm" className="hover:text-white transition-colors">
-                contact@keralb.cm
-              </a>
-            </li>
-            <li className="flex items-center gap-2">
-              <Phone size={14} className="text-keral-orange flex-shrink-0" />
-              <a href="tel:+237666783752" className="hover:text-white transition-colors">
-                +237 666 783 752
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
+          {/* Col 2 */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <p style={{ fontFamily: 'Inter', fontSize: '11px', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--text-tertiary)' }}>
+              Nos Produits
+            </p>
+            <nav aria-label="Liens produits footer">
+              <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                {PRODUCTS.map((p) => (
+                  <li key={p.id}>
+                    <Link
+                      to={p.route}
+                      style={{ fontFamily: 'Inter', fontSize: '13px', color: 'var(--text-secondary)', textDecoration: 'none', transition: 'color 0.2s ease' }}
+                      onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--accent-gold)' }}
+                      onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--text-secondary)' }}
+                    >
+                      {p.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
 
-      <div className="max-w-7xl mx-auto mt-12 pt-8 border-t border-white/5 text-center text-zinc-600 text-sm font-sans">
-        © {new Date().getFullYear()} KERAL-B. Tous droits réservés.
+          {/* Col 3 */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <p style={{ fontFamily: 'Inter', fontSize: '11px', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--text-tertiary)' }}>
+              Contact
+            </p>
+            <address style={{ fontStyle: 'normal', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {[
+                { href: `tel:${CONTACT.whatsapp}`, label: CONTACT.whatsappDisplay },
+                { href: `mailto:${CONTACT.email}`, label: CONTACT.email },
+              ].map(({ href, label }) => (
+                <a
+                  key={href}
+                  href={href}
+                  style={{ fontFamily: 'Inter', fontSize: '13px', color: 'var(--text-secondary)', textDecoration: 'none', transition: 'color 0.2s ease' }}
+                  onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--accent-gold)' }}
+                  onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--text-secondary)' }}
+                >
+                  {label}
+                </a>
+              ))}
+              <p style={{ fontFamily: 'Inter', fontSize: '12px', color: 'var(--text-tertiary)', marginTop: '4px' }}>
+                Fabriqué au Cameroun / CEMAC
+              </p>
+            </address>
+          </div>
+
+        </div>
       </div>
     </footer>
   )

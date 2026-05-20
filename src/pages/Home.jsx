@@ -1,424 +1,539 @@
 import { useEffect, useRef } from 'react'
-import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
+import { motion, useReducedMotion } from 'framer-motion'
 import { gsap } from 'gsap'
-import Hero3D from '../components/Hero3D'
+import JuiceParticles from '../components/JuiceParticles'
+import { PRODUCTS, VALUES, CONTACT, waLink } from '../lib/constants'
 
-const pageVariants = {
-  initial: { opacity: 0, scale: 0.98 },
-  animate: { opacity: 1, scale: 1,
-    transition: { duration: 0.8, ease: 'easeOut' } },
-  exit: { opacity: 0, scale: 1.02,
-    transition: { duration: 0.6, ease: 'easeIn' } }
+/* ── Icône WhatsApp ── */
+function WAIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+  )
 }
 
-const products = [
-  {
-    id: '01',
-    name: "Pur Jus d'Ananas",
-    tagline: 'La pureté tropicale',
-    slug: '/jus-pur-ananas',
-    color: '#E8C547',
-    image: '/images/produits/ananas-avant.png'
-  },
-  {
-    id: '02',
-    name: 'Ananas-Passion',
-    tagline: "L'explosion tropicale",
-    slug: '/jus-ananas-passion',
-    color: '#E86B2A',
-    image: '/images/produits/passion-avant.png'
-  },
-  {
-    id: '03',
-    name: 'Ananas-Gingembre',
-    tagline: 'Le feu de la nature',
-    slug: '/jus-ananas-gingembre',
-    color: '#E8A347',
-    image: '/images/produits/gingembre-avant.png'
-  },
-  {
-    id: '04',
-    name: 'Ananas-Mangue',
-    tagline: "La douceur d'Afrique",
-    slug: '/jus-ananas-mangue',
-    color: '#E86B2A',
-    image: '/images/produits/mangue-avant.png'
-  },
-  {
-    id: '05',
-    name: 'Thé de Moringa',
-    tagline: "L'arbre de vie",
-    slug: '/the-moringa',
-    color: '#3A7A3A',
-    image: '/images/produits/moringa-avant.png'
-  },
-  {
-    id: '06',
-    name: 'TurmeriMove',
-    tagline: 'Le pouvoir des épices',
-    slug: '/tisane-turmerimove',
-    color: '#E8C547',
-    image: '/images/produits/turmerimove-avant.png'
-  },
-]
-
-export default function Home() {
-  const marqueeRef = useRef(null)
-  const productsRef = useRef(null)
-  const statsRef = useRef(null)
-  const aboutRef = useRef(null)
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-
-      // MARQUEE continu
-      if (marqueeRef.current) {
-        const marqueeTrack = marqueeRef.current.querySelector('.marquee-track')
-        gsap.to(marqueeTrack, {
-          xPercent: -50,
-          duration: 20,
-          ease: 'none',
-          repeat: -1,
-        })
-      }
-
-      // PRODUITS — révélation au scroll
-      const productItems = productsRef.current?.querySelectorAll('.product-item')
-      if (productItems) {
-        productItems.forEach((item, i) => {
-          gsap.fromTo(item,
-            { opacity: 0, x: -40 },
-            {
-              opacity: 1,
-              x: 0,
-              duration: 0.8,
-              delay: i * 0.08,
-              ease: 'power3.out',
-              scrollTrigger: {
-                trigger: item,
-                start: 'top 85%',
-                toggleActions: 'play none none none',
-              }
-            }
-          )
-        })
-      }
-
-      // STATS — compteurs animés
-      const statNumbers = statsRef.current?.querySelectorAll('.stat-number')
-      if (statNumbers) {
-        statNumbers.forEach(el => {
-          const target = parseFloat(el.dataset.target)
-          gsap.fromTo({ val: 0 },
-            { val: 0 },
-            {
-              val: target,
-              duration: 2,
-              ease: 'power2.out',
-              scrollTrigger: {
-                trigger: el,
-                start: 'top 80%',
-                toggleActions: 'play none none none',
-              },
-              onUpdate: function() {
-                el.textContent = Number.isInteger(target)
-                  ? Math.round(this.targets()[0].val)
-                  : this.targets()[0].val.toFixed(0)
-              }
-            }
-          )
-        })
-      }
-
-      // ABOUT — parallax
-      if (aboutRef.current) {
-        const img = aboutRef.current.querySelector('.about-img')
-        if (img) {
-          gsap.to(img, {
-            yPercent: -20,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: aboutRef.current,
-              start: 'top bottom',
-              end: 'bottom top',
-              scrub: true,
-            }
-          })
-        }
-      }
-
-    })
-
-    return () => ctx.revert()
-  }, [])
-
+/* ── Chevron bounce ── */
+function ScrollChevron() {
   return (
     <motion.div
-      variants={pageVariants}
-      initial="initial"
-      animate="animate"
-      exit="exit"
-      className="w-full bg-[#050505]"
+      className="flex flex-col items-center gap-1"
+      animate={{ y: [0, 6, 0] }}
+      transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut' }}
     >
-      {/* ── HERO 3D (existant) ── */}
-      <Hero3D />
+      <span style={{ fontSize: '10px', fontFamily: 'Inter', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)' }}>
+        Défiler
+      </span>
+      <svg width="16" height="8" viewBox="0 0 16 8" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M1 1l7 6 7-6"/>
+      </svg>
+    </motion.div>
+  )
+}
 
-      {/* ── MARQUEE ── */}
-      <section
-        ref={marqueeRef}
-        className="py-6 border-y border-white/5 overflow-hidden"
-        style={{ background: '#0A0A0A' }}
+/* ── Marquee text ── */
+const MARQUEE_UNIT = 'Zéro colorant · Zéro conservateur · Zéro arôme · 100% Naturel · Sans sucre ajouté · '
+
+/* ── Card produit ── */
+function ProductCard({ product, index, reduced }) {
+  return (
+    <motion.article
+      initial={reduced ? {} : { opacity: 0, y: 24 }}
+      whileInView={reduced ? {} : { opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-40px' }}
+      transition={{ duration: 0.4, delay: index * 0.08, ease: [0.25, 0.46, 0.45, 0.94] }}
+      className="card-keral group relative flex flex-col"
+    >
+      <Link
+        to={product.route}
+        className="absolute inset-0 z-10"
+        aria-label={`Découvrir ${product.name}`}
+        style={{ touchAction: 'manipulation' }}
+      />
+
+      {/* Zone image */}
+      <div
+        style={{
+          height:          '240px',
+          backgroundColor: 'var(--bg-tertiary)',
+          display:         'flex',
+          alignItems:      'center',
+          justifyContent:  'center',
+          padding:         '24px',
+          overflow:        'hidden',
+        }}
       >
-        <div className="marquee-track flex whitespace-nowrap">
-          {[...Array(2)].map((_, i) => (
-            <span key={i} className="flex items-center gap-8 mr-8">
-              {['NATUREL', 'PUR', 'CAMEROUNAIS', 'PREMIUM', 'VIVANT',
-                '100% NATUREL', 'SANS ADDITIF', 'FAIT AVEC AMOUR'].map(word => (
-                <span key={word} className="flex items-center gap-8">
-                  <span className="font-display text-sm tracking-[0.3em] text-white/40">
-                    {word}
-                  </span>
-                  <span className="text-gold text-xs">✦</span>
-                </span>
-              ))}
+        <img
+          src={product.images.avant}
+          alt={`${product.name} KERAL-B`}
+          loading="lazy"
+          width={160}
+          height={200}
+          style={{
+            objectFit:  'contain',
+            height:     '100%',
+            width:      'auto',
+            transition: 'transform 500ms ease',
+            filter:     'drop-shadow(0 12px 24px rgba(0,0,0,0.2))',
+          }}
+          className="group-hover:scale-105"
+        />
+      </div>
+
+      {/* Zone texte */}
+      <div style={{ padding: '20px 24px 24px', display: 'flex', flexDirection: 'column', flex: 1, gap: '4px' }}>
+        {product.badge && (
+          <span style={{
+            display:         'inline-flex',
+            alignSelf:       'flex-start',
+            fontSize:        '10px',
+            fontWeight:      500,
+            letterSpacing:   '0.1em',
+            textTransform:   'uppercase',
+            color:           'var(--accent-gold)',
+            border:          '1px solid var(--accent-gold)',
+            borderRadius:    '980px',
+            padding:         '2px 8px',
+            marginBottom:    '4px',
+          }}>
+            {product.badge}
+          </span>
+        )}
+        <p style={{ fontSize: '0.7rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-tertiary)' }}>
+          {product.type}
+        </p>
+        <h3 style={{ fontSize: '1rem', fontWeight: 500, color: 'var(--text-primary)', letterSpacing: '-0.01em' }}>
+          {product.name}
+        </h3>
+        <p style={{ fontSize: '0.85rem', color: 'var(--text-tertiary)', lineHeight: 1.5, flex: 1 }}>
+          {product.tagline}
+        </p>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '8px' }}>
+          <span className="text-price">{product.price.toLocaleString('fr-FR')} FCFA</span>
+          <span
+            style={{
+              color:      'var(--accent-gold)',
+              fontSize:   '16px',
+              opacity:    0,
+              transform:  'translateX(0)',
+              transition: 'opacity 0.2s ease, transform 0.2s ease',
+            }}
+            className="group-hover:opacity-100 group-hover:translate-x-1"
+            aria-hidden="true"
+          >
+            →
+          </span>
+        </div>
+      </div>
+    </motion.article>
+  )
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Home page
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+export default function Home() {
+  const marqueeRef = useRef(null)
+  const reduced    = useReducedMotion() ?? false
+
+  /* GSAP marquee */
+  useEffect(() => {
+    if (reduced) return
+    const track = marqueeRef.current
+    if (!track) return
+    const tween = gsap.to(track, { x: '-50%', duration: 28, ease: 'none', repeat: -1 })
+    return () => tween.kill()
+  }, [reduced])
+
+  const scrollToProduits = (e) => {
+    e.preventDefault()
+    document.getElementById('produits')?.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  const fm = (props) => reduced ? {} : props
+
+  return (
+    <main id="main-content">
+
+      {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+          §1 — HERO
+          ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
+      <section
+        style={{
+          position:        'relative',
+          height:          '100dvh',
+          backgroundColor: '#000000',
+          display:         'flex',
+          alignItems:      'center',
+          justifyContent:  'center',
+          overflow:        'hidden',
+        }}
+        aria-label="Accueil KERAL-B"
+      >
+        {/* Particules canvas */}
+        <div style={{ position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none' }}>
+          <JuiceParticles />
+        </div>
+
+        {/* Contenu centré */}
+        <div
+          style={{
+            position:      'relative',
+            zIndex:        10,
+            display:       'flex',
+            flexDirection: 'column',
+            alignItems:    'center',
+            textAlign:     'center',
+            padding:       '0 24px',
+            maxWidth:      '720px',
+            gap:           '24px',
+          }}
+        >
+          {/* Tag pill */}
+          <motion.span
+            {...fm({ initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.4, delay: 0.2 } })}
+            style={{
+              display:         'inline-flex',
+              alignItems:      'center',
+              fontFamily:      'Inter, sans-serif',
+              fontSize:        '11px',
+              fontWeight:      500,
+              letterSpacing:   '0.2em',
+              textTransform:   'uppercase',
+              color:           '#C8A96E',
+              backgroundColor: 'rgba(200,169,110,0.1)',
+              border:          '1px solid rgba(200,169,110,0.2)',
+              borderRadius:    '980px',
+              padding:         '6px 16px',
+            }}
+          >
+            Cameroun · 100% Naturel
+          </motion.span>
+
+          {/* Titre */}
+          <div>
+            <motion.p
+              {...fm({ initial: { opacity: 0, y: 40 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.5, delay: 0.4 } })}
+              style={{
+                fontFamily:    'Inter, sans-serif',
+                fontSize:      'clamp(3rem, 7vw, 6.5rem)',
+                fontWeight:    700,
+                lineHeight:    1.02,
+                letterSpacing: '-0.03em',
+                color:         '#FFFFFF',
+              }}
+            >
+              La Nature
+            </motion.p>
+            <motion.p
+              {...fm({ initial: { opacity: 0, y: 40 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.5, delay: 0.6 } })}
+              style={{
+                fontFamily:    'Playfair Display, serif',
+                fontStyle:     'italic',
+                fontSize:      'clamp(2.8rem, 6.5vw, 6rem)',
+                fontWeight:    500,
+                lineHeight:    1.05,
+                letterSpacing: '-0.02em',
+                color:         '#C8A96E',
+              }}
+            >
+              dans Chaque Goutte
+            </motion.p>
+          </div>
+
+          {/* Sous-titre */}
+          <motion.p
+            {...fm({ initial: { opacity: 0 }, animate: { opacity: 1 }, transition: { duration: 0.4, delay: 0.8 } })}
+            style={{
+              fontFamily: 'Inter, sans-serif',
+              fontSize:   '1.05rem',
+              fontWeight: 400,
+              lineHeight: 1.65,
+              color:      'rgba(255,255,255,0.6)',
+              maxWidth:   '480px',
+            }}
+          >
+            Jus de fruits artisanaux et tisanes premium,<br />
+            fabriqués au cœur du Cameroun.
+          </motion.p>
+
+          {/* Boutons */}
+          <motion.div
+            {...fm({ initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.4, delay: 1.0 } })}
+            style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', justifyContent: 'center' }}
+          >
+            <a
+              href="#produits"
+              onClick={scrollToProduits}
+              className="btn-hero-outline"
+              style={{ touchAction: 'manipulation' }}
+            >
+              Découvrir nos saveurs
+            </a>
+            <a
+              href={waLink()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-wa"
+              style={{ touchAction: 'manipulation' }}
+            >
+              <WAIcon />
+              Commander
+            </a>
+          </motion.div>
+
+          {/* Indicateur scroll */}
+          <motion.div
+            {...fm({ initial: { opacity: 0 }, animate: { opacity: 1 }, transition: { delay: 1.4 } })}
+          >
+            <ScrollChevron />
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+          §2 — BANDEAU OR
+          ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
+      <div
+        role="region"
+        aria-label="Engagements KERAL-B"
+        style={{ height: '48px', backgroundColor: '#C8A96E', overflow: 'hidden', display: 'flex', alignItems: 'center' }}
+      >
+        <div
+          ref={marqueeRef}
+          style={{ display: 'flex', width: 'max-content', willChange: 'transform' }}
+        >
+          {[0, 1].map((n) => (
+            <span
+              key={n}
+              aria-hidden={n === 1 ? 'true' : undefined}
+              style={{
+                display:       'block',
+                fontFamily:    'Inter, sans-serif',
+                fontSize:      '11px',
+                fontWeight:    500,
+                letterSpacing: '0.2em',
+                textTransform: 'uppercase',
+                color:         '#000',
+                whiteSpace:    'nowrap',
+                padding:       '0 2rem',
+              }}
+            >
+              {MARQUEE_UNIT.repeat(5)}
             </span>
           ))}
         </div>
-      </section>
+      </div>
 
-      {/* ── PRODUITS LIST (style Floema) ── */}
+      {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+          §3 — PRODUITS
+          ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       <section
-        ref={productsRef}
-        className="py-32 px-6 md:px-16 lg:px-32"
+        id="produits"
+        className="section-gray"
+        style={{ padding: 'clamp(4rem, 8vw, 8rem) 0', scrollMarginTop: '64px' }}
+        aria-labelledby="produits-titre"
       >
-        <div className="flex items-end justify-between mb-20">
-          <div>
-            <p className="text-white/30 text-xs tracking-[0.4em] uppercase mb-4">
-              Notre Collection
-            </p>
-            <h2
-              className="font-display text-white leading-none"
-              style={{ fontSize: 'clamp(3rem, 7vw, 7rem)' }}
-            >
-              NOS SAVEURS
+        <div className="container-keral">
+          {/* Header */}
+          <motion.div
+            {...fm({ initial: { opacity: 0, y: 20 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { duration: 0.4 } })}
+            style={{ marginBottom: '48px' }}
+          >
+            <p className="text-label" style={{ marginBottom: '12px' }}>Nos Produits</p>
+            <h2 id="produits-titre" style={{ fontFamily: 'Inter', fontSize: 'clamp(2.2rem, 4vw, 3.5rem)', fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--text-primary)', lineHeight: 1.1 }}>
+              Six Saveurs,{' '}
+              <span style={{ fontFamily: 'Playfair Display, serif', fontStyle: 'italic', color: 'var(--accent-gold)' }}>
+                Une Promesse.
+              </span>
             </h2>
-          </div>
-          <p className="text-white/30 text-sm font-body hidden md:block">
-            6 produits · 100% naturels
-          </p>
-        </div>
+          </motion.div>
 
-        <div className="divide-y divide-white/5">
-          {products.map((product) => (
-            <a
-              key={product.id}
-              href={product.slug}
-              className="product-item group flex items-center justify-between py-8 md:py-10 opacity-0"
-            >
-              <div className="flex items-center gap-6 md:gap-12">
-                <span
-                  className="font-display text-sm tracking-widest"
-                  style={{ color: 'rgba(240,235,224,0.2)' }}
+          {/* Grille 3 cols desktop */}
+          <div style={{
+            display:             'grid',
+            gridTemplateColumns: 'repeat(1, 1fr)',
+            gap:                 '24px',
+          }}>
+            <style>{`
+              @media (min-width: 640px) { #product-grid { grid-template-columns: repeat(2, 1fr) !important; } }
+              @media (min-width: 1024px) { #product-grid { grid-template-columns: repeat(3, 1fr) !important; } }
+            `}</style>
+            <div id="product-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(1, 1fr)', gap: '24px' }}>
+              {PRODUCTS.map((p, i) => (
+                <ProductCard key={p.id} product={p} index={i} reduced={reduced} />
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+          §4 — VALEURS (Apple features)
+          ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
+      <section
+        className="section-white"
+        style={{ padding: 'clamp(4rem, 8vw, 8rem) 0' }}
+        aria-labelledby="valeurs-titre"
+      >
+        <div className="container-keral">
+          <motion.div
+            {...fm({ initial: { opacity: 0, y: 20 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { duration: 0.4 } })}
+            style={{ textAlign: 'center', marginBottom: '64px' }}
+          >
+            <h2 id="valeurs-titre" style={{ fontFamily: 'Inter', fontSize: 'clamp(1.8rem, 3.5vw, 2.8rem)', fontWeight: 700, letterSpacing: '-0.025em', color: 'var(--text-primary)', lineHeight: 1.1 }}>
+              Ce que nous{' '}
+              <span style={{ fontFamily: 'Playfair Display, serif', fontStyle: 'italic', color: 'var(--accent-gold)' }}>
+                ne mettons jamais.
+              </span>
+            </h2>
+          </motion.div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '32px' }}>
+            <style>{`@media (min-width: 768px) { #values-grid { grid-template-columns: repeat(4, 1fr) !important; } }`}</style>
+            <div id="values-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '32px' }}>
+              {VALUES.map((v, i) => (
+                <motion.div
+                  key={v.id}
+                  {...fm({ initial: { opacity: 0, y: 16 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { duration: 0.4, delay: i * 0.08 } })}
+                  style={{
+                    display:       'flex',
+                    flexDirection: 'column',
+                    gap:           '12px',
+                    padding:       '24px',
+                    borderRadius:  'var(--radius-lg)',
+                    border:        '1px solid var(--border-subtle)',
+                    backgroundColor: 'var(--bg-card)',
+                  }}
                 >
-                  {product.id}
-                </span>
-                <div>
-                  <h3
-                    className="font-display text-2xl md:text-4xl text-white
-                               group-hover:text-gold transition-colors duration-500
-                               tracking-wider"
-                  >
-                    {product.name.toUpperCase()}
-                  </h3>
-                  <p className="font-accent italic text-white/30 text-sm mt-1
-                                group-hover:text-white/50 transition-colors duration-500">
-                    {product.tagline}
+                  <span style={{ fontSize: '2rem' }} aria-hidden="true">{v.icon}</span>
+                  <p style={{ fontFamily: 'Inter', fontSize: '1rem', fontWeight: 600, color: 'var(--text-primary)', letterSpacing: '-0.01em' }}>
+                    {v.label}
                   </p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-6">
-                <div
-                  className="hidden md:block w-20 h-28 overflow-hidden rounded
-                             opacity-0 group-hover:opacity-100
-                             transition-all duration-500 transform
-                             scale-75 group-hover:scale-100"
-                >
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-
-                <div
-                  className="w-10 h-10 rounded-full border border-white/10
-                             flex items-center justify-center
-                             group-hover:border-gold group-hover:bg-gold/10
-                             transition-all duration-500
-                             transform group-hover:translate-x-2"
-                >
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                    <path d="M1 7h12M7 1l6 6-6 6"
-                          stroke="currentColor" strokeWidth="1.5"
-                          strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </div>
-              </div>
-            </a>
-          ))}
-        </div>
-      </section>
-
-      {/* ── STATS ── */}
-      <section
-        ref={statsRef}
-        className="py-24 border-y border-white/5"
-        style={{ background: '#080808' }}
-      >
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-1">
-          {[
-            { label: 'Naturel', value: 100, suffix: '%' },
-            { label: 'Additif', value: 0, suffix: '' },
-            { label: 'Saveurs', value: 6, suffix: '' },
-            { label: 'Volume', value: 300, suffix: 'ml' },
-          ].map((stat, i) => (
-            <div
-              key={i}
-              className="flex flex-col items-center justify-center py-8 px-3 md:py-12 md:px-6
-                         border-r border-white/5 last:border-0"
-            >
-              <div className="flex items-end gap-1 mb-3">
-                <span
-                  className="stat-number font-display text-5xl md:text-7xl text-gold"
-                  data-target={stat.value}
-                >
-                  0
-                </span>
-                <span className="font-display text-2xl text-gold/60 mb-2">
-                  {stat.suffix}
-                </span>
-              </div>
-              <p className="text-white/30 text-xs tracking-[0.3em] uppercase font-body">
-                {stat.label}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ── ABOUT / HISTOIRE ── */}
-      <section
-        ref={aboutRef}
-        className="py-16 md:py-32 px-6 md:px-16 lg:px-32
-                   flex flex-col md:flex-row
-                   items-center gap-12 md:gap-32"
-      >
-        <div className="flex-1">
-          <p className="text-white/30 text-xs tracking-[0.4em] uppercase mb-6">
-            Notre Histoire
-          </p>
-          <h2
-            className="font-display text-white leading-none mb-8"
-            style={{ fontSize: 'clamp(2.5rem, 5vw, 5rem)' }}
-          >
-            LA NATURE<br/>
-            <span className="text-gold">DANS CHAQUE</span><br/>
-            GOUTTE
-          </h2>
-          <p className="text-white/40 font-body text-base leading-relaxed mb-10 max-w-md">
-            Keral-B naît de la conviction que la nature offre
-            le meilleur. Chaque bouteille est une promesse :
-            zéro colorant, zéro conservateur, zéro arôme artificiel.
-            Juste la pureté du fruit camerounais.
-          </p>
-          <a
-            href="/about"
-            className="inline-flex items-center gap-3 text-gold
-                       text-xs tracking-[0.3em] uppercase font-body
-                       border-b border-gold/30 pb-1
-                       hover:border-gold transition-colors duration-300"
-          >
-            Notre histoire
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-              <path d="M1 6h10M6 1l5 5-5 5" stroke="currentColor"
-                    strokeWidth="1.5" strokeLinecap="round"/>
-            </svg>
-          </a>
-        </div>
-
-        <div className="flex-1 relative h-[500px] w-full overflow-hidden rounded-sm">
-          <div
-            className="about-img absolute inset-0 scale-110"
-            style={{ background: 'linear-gradient(135deg, #1a2a1a 0%, #0a1a0a 100%)' }}
-          >
-            <div className="w-full h-full flex items-center justify-center">
-              <div className="text-center">
-                <div className="text-8xl mb-4 opacity-20 font-display text-gold">
-                  KERAL-B
-                </div>
-                <p className="text-white/20 text-sm tracking-widest uppercase">
-                  Cameroun · Afrique Centrale
-                </p>
-              </div>
+                  <p style={{ fontFamily: 'Inter', fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: 1.55 }}>
+                    {v.desc}
+                  </p>
+                </motion.div>
+              ))}
             </div>
           </div>
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background: 'linear-gradient(to right, #050505 0%, transparent 30%, transparent 70%, #050505 100%)'
-            }}
-          />
         </div>
       </section>
 
-      {/* ── CTA FINAL ── */}
+      {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+          §5 — ABOUT
+          ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       <section
-        className="py-32 px-6 text-center border-t border-white/5"
-        style={{ background: '#050505' }}
+        className="section-gray"
+        style={{ padding: 'clamp(4rem, 8vw, 8rem) 0' }}
+        aria-labelledby="about-titre"
       >
-        <p className="text-white/20 text-xs tracking-[0.5em] uppercase mb-6 font-body">
-          Commander maintenant
-        </p>
-        <h2
-          className="font-display text-white leading-none mb-12"
-          style={{ fontSize: 'clamp(2.5rem, 8vw, 8rem)' }}
-        >
-          PRÊT À<br/>
-          <span className="text-gold">GOÛTER</span><br/>
-          LA NATURE ?
-        </h2>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a
-            href="https://wa.me/237656783732"
+        <div className="container-keral">
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '48px' }}>
+            <style>{`@media (min-width: 768px) { #about-grid { grid-template-columns: 1.4fr 1fr !important; } }`}</style>
+            <div id="about-grid" style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '48px', alignItems: 'center' }}>
+              {/* Gauche */}
+              <motion.div
+                {...fm({ initial: { opacity: 0, x: -20 }, whileInView: { opacity: 1, x: 0 }, viewport: { once: true, margin: '-60px' }, transition: { duration: 0.4 } })}
+                style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}
+              >
+                <p className="text-label">Notre Histoire</p>
+                <h2 id="about-titre" style={{ fontFamily: 'Playfair Display, serif', fontStyle: 'italic', fontSize: 'clamp(1.8rem, 3.5vw, 2.8rem)', fontWeight: 500, lineHeight: 1.2, color: 'var(--text-primary)' }}>
+                  Chaque goutte porte{' '}
+                  <span style={{ color: 'var(--accent-gold)', textDecoration: 'underline', textDecorationColor: 'rgba(200,169,110,0.4)', textUnderlineOffset: '4px' }}>
+                    l'âme du Cameroun.
+                  </span>
+                </h2>
+                <p className="text-body" style={{ maxWidth: '440px' }}>
+                  Keral-B est née d'une conviction simple&nbsp;: la nature offre le meilleur.
+                  Nos fruits sont sélectionnés avec soin au Cameroun, pressés et mis en
+                  bouteille sans aucun additif.
+                </p>
+                <a
+                  href={waLink()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-secondary"
+                  style={{ alignSelf: 'flex-start', touchAction: 'manipulation' }}
+                >
+                  Commander maintenant
+                </a>
+              </motion.div>
+
+              {/* Droite — chiffres clés */}
+              <motion.div
+                {...fm({ initial: { opacity: 0, x: 20 }, whileInView: { opacity: 1, x: 0 }, viewport: { once: true, margin: '-60px' }, transition: { duration: 0.4, delay: 0.1 } })}
+                style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '24px' }}
+              >
+                {[
+                  { value: '0',    label: 'Additif'  },
+                  { value: '100%', label: 'Naturel'  },
+                  { value: '6',    label: 'Saveurs'  },
+                  { value: '1L',   label: 'Volume'   },
+                ].map(({ value, label }) => (
+                  <div
+                    key={label}
+                    style={{
+                      padding:         '24px',
+                      borderRadius:    'var(--radius-lg)',
+                      backgroundColor: 'var(--bg-card)',
+                      border:          '1px solid var(--border-subtle)',
+                      display:         'flex',
+                      flexDirection:   'column',
+                      gap:             '4px',
+                    }}
+                  >
+                    <span style={{ fontFamily: 'Playfair Display, serif', fontStyle: 'italic', fontSize: 'clamp(2rem, 4vw, 2.8rem)', color: 'var(--accent-gold)', fontWeight: 500, lineHeight: 1 }}>
+                      {value}
+                    </span>
+                    <span className="text-label">{label}</span>
+                  </div>
+                ))}
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+          §6 — CTA FINAL
+          ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
+      <section
+        style={{ backgroundColor: '#000', padding: 'clamp(5rem, 10vw, 10rem) 0', textAlign: 'center' }}
+        aria-labelledby="cta-titre"
+      >
+        <div className="container-keral" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '32px' }}>
+          <motion.h2
+            id="cta-titre"
+            {...fm({ initial: { opacity: 0, y: 24 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { duration: 0.4 } })}
+            style={{ fontFamily: 'Playfair Display, serif', fontStyle: 'italic', fontSize: 'clamp(2.5rem, 6vw, 5rem)', fontWeight: 500, lineHeight: 1.05, color: '#F5F5F7' }}
+          >
+            Prêt à goûter{' '}
+            <span style={{ color: '#C8A96E' }}>la nature&nbsp;?</span>
+          </motion.h2>
+
+          <motion.p
+            {...fm({ initial: { opacity: 0 }, whileInView: { opacity: 1 }, viewport: { once: true }, transition: { duration: 0.4, delay: 0.1 } })}
+            style={{ fontSize: '1rem', color: 'rgba(245,245,247,0.4)', maxWidth: '340px', lineHeight: 1.7 }}
+          >
+            Commandez directement via WhatsApp.<br />Livraison à Douala.
+          </motion.p>
+
+          <motion.a
+            href={waLink()}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 px-10 py-5
-                       bg-gold text-[#050505] font-body font-medium
-                       text-xs tracking-[0.2em] uppercase
-                       hover:bg-keral-orange hover:text-white
-                       transition-all duration-500
-                       hover:-translate-y-1 hover:shadow-2xl
-                       hover:shadow-gold/30"
+            {...fm({ initial: { opacity: 0, y: 12 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { duration: 0.4, delay: 0.2 } })}
+            className="btn-wa"
+            style={{ padding: '18px 48px', fontSize: '1rem', touchAction: 'manipulation' }}
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-            </svg>
+            <WAIcon />
             Commander via WhatsApp
-          </a>
-          <a
-            href="/produits"
-            className="inline-flex items-center gap-3 px-10 py-5
-                       border border-white/15 text-white/60
-                       font-body text-xs tracking-[0.2em] uppercase
-                       hover:border-gold/40 hover:text-gold
-                       transition-all duration-500"
-          >
-            Voir tous les produits
-          </a>
+          </motion.a>
         </div>
       </section>
 
-    </motion.div>
+    </main>
   )
 }

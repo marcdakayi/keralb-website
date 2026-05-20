@@ -7,21 +7,23 @@ import './index.css'
 
 gsap.registerPlugin(ScrollTrigger)
 
+/* ── Lenis smooth scroll v1.x ── */
 const lenis = new Lenis({
-  duration: 1.4,
-  easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-  smooth: true,
-  smoothTouch: false,
+  duration:    1.2,
+  easing:      (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+  orientation: 'vertical',
+  smoothWheel: true,
 })
 
-function raf(time) {
-  lenis.raf(time)
-  ScrollTrigger.update()
-  requestAnimationFrame(raf)
-}
-requestAnimationFrame(raf)
+/* Synchronise Lenis avec GSAP ticker (ScrollTrigger) */
+lenis.on('scroll', ScrollTrigger.update)
 
-// @ts-ignore — expose lenis globally pour ScrollTrigger integration
+gsap.ticker.add((time) => {
+  lenis.raf(time * 1000)
+})
+gsap.ticker.lagSmoothing(0)
+
+/* Expose globalement pour usage dans les composants si besoin */
 window.__lenis = lenis
 
 ReactDOM.createRoot(document.getElementById('root')).render(<App />)

@@ -1,238 +1,209 @@
-import { useRef, useEffect } from 'react'
-import { motion, useScroll, useTransform, useInView, animate } from 'framer-motion'
-import { CheckCircle2, Leaf, Shield, Droplets } from 'lucide-react'
-import OrderForm from './OrderForm'
-import ProductRotation from './ProductRotation'
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
+import { waLink, getAdjacentProducts } from '../lib/constants'
 
-function Counter({ value, suffix = "" }) {
-  const nodeRef = useRef()
-  const isInView = useInView(nodeRef, { once: true, margin: "-100px" })
-
-  useEffect(() => {
-    if (isInView) {
-      const controls = animate(0, value, {
-        duration: 2,
-        ease: "easeOut",
-        onUpdate(v) {
-          if (nodeRef.current) {
-            nodeRef.current.textContent = Math.round(v) + suffix
-          }
-        }
-      })
-      return () => controls.stop()
-    }
-  }, [isInView, value, suffix])
-
-  return <span ref={nodeRef} className="text-5xl font-display font-bold text-white">0{suffix}</span>
+function WAIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+  )
 }
 
-export default function ProductPage({
-  title,
-  subtitle,
-  tagline,
-  ingredientsList,
-  bienfaitsList,
-  colorCode,
-  imagePath,
-  images,
-  modelType = 'bottle'
-}) {
-  const containerRef = useRef(null)
+function CheckIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <polyline points="20 6 9 17 4 12"/>
+    </svg>
+  )
+}
 
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  })
+function VideoWithFallback({ src, style, accentColor }) {
+  const [failed, setFailed] = useState(false)
+  if (failed || !src) {
+    return (
+      <div style={{ ...style, background: `linear-gradient(135deg, #0A0A0A 0%, ${accentColor}22 50%, #0A0A0A 100%)` }} />
+    )
+  }
+  return (
+    <video src={src} autoPlay muted loop playsInline style={style} onError={() => setFailed(true)} />
+  )
+}
 
-  const yBackground = useTransform(scrollYProgress, [0, 1], ["0%", "50%"])
-  const yImage      = useTransform(scrollYProgress, [0, 0.5], ["0px", "-80px"])
-  const yFloating1  = useTransform(scrollYProgress, [0, 1], ["0px", "-200px"])
-  const yFloating2  = useTransform(scrollYProgress, [0, 1], ["0px", "150px"])
+export default function ProductPage({ product }) {
+  const { prev, next } = getAdjacentProducts(product.slug)
 
   return (
-    <div ref={containerRef} className="bg-[#0A0A0A] min-h-screen relative overflow-hidden">
+    <main id="main-content">
 
-      {/* ===== HERO ===== */}
-      <section className="relative h-screen flex items-center justify-center">
-        {/* Radial glow blob */}
-        <motion.div
-          style={{ backgroundColor: colorCode, y: yBackground }}
-          animate={{ scale: [1, 1.2, 0.9, 1], rotate: [0, 90, 180, 0] }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[60vw] blur-[120px] rounded-full opacity-10 pointer-events-none"
-        />
+      {/* §1 — HERO PRODUIT */}
+      <section style={{ position: 'relative', height: '100dvh', overflow: 'hidden', backgroundColor: '#000' }} aria-label={product.name}>
 
-        <div className="absolute inset-0 z-10 flex flex-col md:flex-row items-center px-6 md:px-24">
-
-          {/* Left — text */}
-          <div className="w-full md:w-1/2 pt-24 md:pt-0">
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, ease: "easeOut" }}
-            >
-              <h2 className="text-zinc-500 font-sans uppercase tracking-[0.3em] text-xs font-bold mb-4">
-                {subtitle}
-              </h2>
-              <h1
-                className="font-display font-bold text-white leading-none mb-6"
-                style={{ fontSize: 'clamp(48px, 6vw, 80px)' }}
-              >
-                {title.split(' ').map((word, i) => (
-                  <span key={i} className="block">{word}</span>
-                ))}
-              </h1>
-
-              {/* Tagline — Cormorant Garamond italic */}
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6, duration: 0.8 }}
-                className="font-cormorant italic text-2xl md:text-3xl"
-                style={{ color: colorCode }}
-              >
-                {tagline}
-              </motion.p>
-
-              {/* CTA */}
-              <motion.a
-                href="#commander"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1, duration: 0.6 }}
-                className="inline-block mt-10 px-8 py-4 rounded-[50px] font-sans font-semibold text-black text-sm tracking-wider"
-                style={{ background: 'linear-gradient(135deg, #FFD700, #FF6B00)' }}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.97 }}
-              >
-                Commander maintenant
-              </motion.a>
-            </motion.div>
-          </div>
-
-          {/* Right — product viewer (image + zoom rotatif sur zones) */}
-          <motion.div
-            initial={{ opacity: 0, x: 60 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1.2, ease: "easeOut" }}
-            className="w-full md:w-1/2 h-[60vh] md:h-[80vh] flex items-center justify-center"
-          >
-            <motion.div style={{ y: yImage }} className="w-full px-4 md:px-8 h-full">
-              {images && images.length > 0 ? (
-                <ProductRotation images={images} productColor={colorCode} />
-              ) : (
-                <div
-                  className="w-48 h-80 mx-auto rounded-3xl opacity-30 flex items-center justify-center text-white/40 text-sm font-sans"
-                  style={{ background: `linear-gradient(135deg, ${colorCode}40, ${colorCode}10)`, border: `1px solid ${colorCode}30` }}
-                >
-                  Image à ajouter
-                </div>
-              )}
-            </motion.div>
-          </motion.div>
+        {/* Vidéo fond */}
+        <div className="video-bg-container">
+          <VideoWithFallback src={product.videoHero} style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.35 }} accentColor={product.accentColor} />
+          <div className="video-overlay" />
         </div>
 
-        {/* Scroll indicator */}
-        <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ repeat: Infinity, duration: 1.5 }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 text-zinc-500"
-        >
-          <div className="w-px h-16 bg-gradient-to-b from-white/20 to-transparent mx-auto" />
-        </motion.div>
-      </section>
+        {/* Bouteille flottante */}
+        <div style={{ position: 'absolute', right: 'clamp(5%, 10%, 15%)', bottom: 0, height: '70vh', zIndex: 5 }} aria-hidden="true">
+          <img
+            src={product.images.avant}
+            alt=""
+            className="bottle-float"
+            style={{ height: '100%', width: 'auto', objectFit: 'contain', filter: 'drop-shadow(0 40px 80px rgba(0,0,0,0.5))' }}
+          />
+        </div>
 
-      {/* ===== STORY & INGRÉDIENTS ===== */}
-      <section className="py-32 px-6 md:px-24 relative z-20 border-t border-white/5">
-        <motion.div style={{ y: yFloating1 }} className="absolute right-[10%] top-[20%] opacity-20">
-          <Leaf size={120} color={colorCode} />
-        </motion.div>
+        {/* Contenu bas-gauche */}
+        <div style={{ position: 'absolute', bottom: 0, left: 0, right: '40%', zIndex: 10, padding: 'clamp(32px, 5vw, 48px)' }}>
+          {/* Breadcrumb */}
+          <p style={{ fontFamily: 'Inter', fontSize: '11px', color: 'rgba(255,255,255,0.4)', letterSpacing: '0.05em', marginBottom: '20px' }}>
+            <Link to="/" style={{ color: 'inherit', textDecoration: 'none' }}>Accueil</Link>
+            {' / '}
+            <span style={{ color: 'rgba(255,255,255,0.7)' }}>{product.name}</span>
+          </p>
 
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            className="text-4xl md:text-5xl font-display font-bold text-white mb-8"
+          {/* Badge type */}
+          <div style={{ display: 'flex', gap: '8px', marginBottom: '12px', flexWrap: 'wrap' }}>
+            <span style={{ fontFamily: 'Inter', fontSize: '11px', fontWeight: 500, letterSpacing: '0.15em', textTransform: 'uppercase', color: product.accentColor, backgroundColor: `${product.accentColor}20`, border: `1px solid ${product.accentColor}40`, borderRadius: '980px', padding: '3px 10px' }}>
+              {product.type} · {product.volume}
+            </span>
+            {product.badge && (
+              <span style={{ fontFamily: 'Inter', fontSize: '11px', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#C8A96E', border: '1px solid rgba(200,169,110,0.4)', borderRadius: '980px', padding: '3px 10px' }}>
+                {product.badge}
+              </span>
+            )}
+          </div>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+            style={{ fontFamily: 'Inter', fontSize: 'clamp(2rem, 5.5vw, 4.5rem)', fontWeight: 700, lineHeight: 1.02, letterSpacing: '-0.03em', color: '#FFF', marginBottom: '8px' }}
           >
-            L'Origine du Goût
-          </motion.h2>
+            {product.name}
+          </motion.h1>
 
           <motion.p
             initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="text-xl md:text-2xl text-[#CCCCCC] font-sans leading-relaxed"
+            style={{ fontFamily: 'Playfair Display, serif', fontStyle: 'italic', fontSize: '1.15rem', color: '#C8A96E', marginBottom: '24px' }}
           >
-            Créé à partir de <span className="text-white font-bold">{ingredientsList}</span>.{' '}
-            Nous sélectionnons les meilleures récoltes du Cameroun pour extraire une essence pure, sans aucun compromis sur la qualité.
+            {product.tagline}
           </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.35 }}
+            style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}
+          >
+            <span style={{ fontFamily: 'Inter', fontSize: '1.6rem', fontWeight: 700, color: '#C8A96E', letterSpacing: '-0.02em' }}>
+              {product.price.toLocaleString('fr-FR')} FCFA
+            </span>
+            <a href={waLink(product.name)} target="_blank" rel="noopener noreferrer" className="btn-wa" style={{ touchAction: 'manipulation' }}>
+              <WAIcon /> Commander
+            </a>
+          </motion.div>
         </div>
       </section>
 
-      {/* ===== BIENFAITS ===== */}
-      <section id="commander" className="py-32 px-6 md:px-24 bg-[#111111] relative z-20">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-zinc-900/40 backdrop-blur-md border border-white/10 p-8 rounded-3xl flex flex-col items-center justify-center text-center">
-              <Shield className="w-12 h-12 mb-6" style={{ color: colorCode }} />
-              <Counter value={100} suffix="%" />
-              <p className="text-[#CCCCCC] font-sans uppercase tracking-widest text-sm mt-4 font-bold">Naturel</p>
+      {/* §2 — INGRÉDIENTS + BIENFAITS */}
+      <section className="section-gray" style={{ padding: 'clamp(4rem, 8vw, 7rem) 0' }} aria-labelledby="ingredients-titre">
+        <div className="container-keral">
+          <div id="ing-grid" style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '48px' }}>
+            <style>{`@media(min-width:768px){#ing-grid{grid-template-columns:1fr 1fr!important}}`}</style>
+
+            <div>
+              <p className="text-label" style={{ marginBottom: '16px' }}>Ingrédients</p>
+              <h2 id="ingredients-titre" style={{ fontFamily: 'Inter', fontSize: 'clamp(1.4rem, 2.5vw, 1.9rem)', fontWeight: 600, letterSpacing: '-0.02em', color: 'var(--text-primary)', marginBottom: '24px' }}>
+                Ce qu'il y a dans votre bouteille.
+              </h2>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                {product.ingredients.map((ing) => (
+                  <span key={ing.name} style={{ fontFamily: 'Inter', fontSize: '0.9rem', fontWeight: 500, color: 'var(--accent-gold)', backgroundColor: 'rgba(200,169,110,0.08)', border: '1.5px solid rgba(200,169,110,0.2)', borderRadius: '980px', padding: '8px 18px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                    {ing.name}
+                    <span style={{ fontSize: '11px', color: 'var(--text-tertiary)', fontWeight: 400 }}>— {ing.origin}</span>
+                  </span>
+                ))}
+              </div>
             </div>
 
-            <div className="bg-zinc-900/40 backdrop-blur-md border border-white/10 p-8 rounded-3xl flex flex-col items-center justify-center text-center">
-              <Droplets className="w-12 h-12 mb-6" style={{ color: colorCode }} />
-              <Counter value={0} />
-              <p className="text-[#CCCCCC] font-sans uppercase tracking-widest text-sm mt-4 font-bold">Conservateur</p>
-            </div>
-
-            <div className="bg-zinc-900/40 backdrop-blur-md border border-white/10 p-8 rounded-3xl flex flex-col items-center justify-center text-center">
-              <Leaf className="w-12 h-12 mb-6" style={{ color: colorCode }} />
-              <Counter value={100} suffix="%" />
-              <p className="text-[#CCCCCC] font-sans uppercase tracking-widest text-sm mt-4 font-bold">Bien-être</p>
+            <div>
+              <p className="text-label" style={{ marginBottom: '16px' }}>Bienfaits</p>
+              <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                {product.benefits.map((b) => (
+                  <li key={b} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', color: 'var(--text-primary)' }}>
+                    <span style={{ color: 'var(--accent-gold)', flexShrink: 0, marginTop: '1px' }}><CheckIcon /></span>
+                    <span style={{ fontFamily: 'Inter', fontSize: '1rem', lineHeight: 1.5 }}>{b}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
+        </div>
+      </section>
 
-          <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8">
-            {bienfaitsList.map((bienfait, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="flex items-center gap-4 bg-white/5 p-4 rounded-2xl border border-white/5"
-              >
-                <CheckCircle2 className="w-6 h-6 flex-shrink-0" style={{ color: colorCode }} />
-                <span className="text-white font-sans text-lg">{bienfait}</span>
-              </motion.div>
+      {/* §3 — VIDÉOS LIFESTYLE */}
+      <section className="section-white" style={{ padding: 'clamp(4rem, 8vw, 7rem) 0' }}>
+        <div className="container-keral">
+          <p className="text-label" style={{ marginBottom: '12px' }}>En images</p>
+          <h2 style={{ fontFamily: 'Inter', fontSize: 'clamp(1.4rem, 2.5vw, 1.9rem)', fontWeight: 600, letterSpacing: '-0.02em', color: 'var(--text-primary)', marginBottom: '32px' }}>
+            Dans votre quotidien.
+          </h2>
+          <div id="lifestyle-grid" style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '24px' }}>
+            <style>{`@media(min-width:640px){#lifestyle-grid{grid-template-columns:repeat(2,1fr)!important}}`}</style>
+            {[product.videoLifestyle1, product.videoLifestyle2].map((src, i) => (
+              <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <div style={{ borderRadius: 'var(--radius-xl)', overflow: 'hidden', aspectRatio: '9/16', maxHeight: '520px' }}>
+                  <VideoWithFallback src={src} style={{ width: '100%', height: '100%', objectFit: 'cover' }} accentColor={product.accentColor} />
+                </div>
+                <p style={{ fontFamily: 'Inter', fontSize: '13px', color: 'var(--text-secondary)', textAlign: 'center' }}>
+                  {i === 0 ? 'Style de vie — naturel au quotidien' : 'Bien-être — vitalité et fraîcheur'}
+                </p>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ===== COMMANDE ===== */}
-      <section className="py-32 px-6 md:px-24 relative z-20">
-        <motion.div style={{ y: yFloating2 }} className="absolute left-[5%] bottom-[10%] opacity-10">
-          <Droplets size={150} color={colorCode} />
-        </motion.div>
-
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-16">
-          <div className="w-full md:w-1/2">
-            <h2 className="text-5xl md:text-7xl font-display font-bold text-white mb-6">
-              L'Expérience<br />KERAL-B
-            </h2>
-            <p className="text-xl text-[#CCCCCC] font-sans mb-8 max-w-md">
-              Faites le choix de la qualité absolue. Commandez maintenant et faites-vous livrer directement chez vous.
-            </p>
-          </div>
-
-          <div className="w-full md:w-1/2">
-            <OrderForm productName={title} price={2500} colorCode={colorCode} />
-          </div>
+      {/* §4 — CTA PRODUIT */}
+      <section className="section-gray" style={{ padding: 'clamp(4rem, 8vw, 7rem) 0', textAlign: 'center' }}>
+        <div className="container-keral" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px' }}>
+          <h2 style={{ fontFamily: 'Playfair Display, serif', fontStyle: 'italic', fontSize: 'clamp(1.8rem, 4vw, 3rem)', fontWeight: 500, color: 'var(--text-primary)' }}>
+            Envie d'en profiter&nbsp;?
+          </h2>
+          <p style={{ fontFamily: 'Inter', fontSize: '1rem', color: 'var(--text-secondary)', maxWidth: '320px', lineHeight: 1.65 }}>
+            Commandez votre <strong>{product.name}</strong> directement via WhatsApp.
+          </p>
+          <a href={waLink(product.name)} target="_blank" rel="noopener noreferrer" className="btn-wa" style={{ padding: '18px 44px', touchAction: 'manipulation' }}>
+            <WAIcon /> Commander — {product.price.toLocaleString('fr-FR')} FCFA
+          </a>
         </div>
       </section>
-    </div>
+
+      {/* §5 — NAVIGATION PRODUITS */}
+      <nav aria-label="Produit précédent / suivant" style={{ borderTop: '1px solid var(--border-subtle)', display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
+        {[
+          { product: prev, label: '← Précédent', align: 'left' },
+          { product: next, label: 'Suivant →',   align: 'right' },
+        ].map(({ product: p, label, align }, i) => (
+          <Link
+            key={p.id}
+            to={p.route}
+            style={{ padding: 'clamp(20px, 4vw, 32px) clamp(20px, 4vw, 48px)', display: 'flex', flexDirection: 'column', gap: '4px', textAlign: align, textDecoration: 'none', borderRight: i === 0 ? '1px solid var(--border-subtle)' : 'none', transition: 'background-color 0.2s ease' }}
+            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--bg-secondary)' }}
+            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent' }}
+          >
+            <span style={{ fontSize: '11px', fontFamily: 'Inter', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-tertiary)' }}>{label}</span>
+            <span style={{ fontFamily: 'Playfair Display, serif', fontStyle: 'italic', fontSize: '1.1rem', color: 'var(--text-primary)' }}>{p.name}</span>
+          </Link>
+        ))}
+      </nav>
+
+    </main>
   )
 }
